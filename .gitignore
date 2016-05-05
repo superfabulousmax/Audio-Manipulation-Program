@@ -1,0 +1,41 @@
+# compiled source 
+
+*.o
+*.exe
+*.so
+samp
+tests
+
+# packages
+
+*.7z
+*.zip
+*.rar
+*.tar
+*.gz
+
+# backups
+
+*~
+*.swp
+
+# misc
+
+*.txt
+*.pdf
+*.py
+*.hdr
+*.raw
+core
+
+# folders
+
+sample_input/
+worked_examples_loading_and_manipulating_PCM_RAW_audio_files/
+
+# images
+
+*.pgm
+
+
+
