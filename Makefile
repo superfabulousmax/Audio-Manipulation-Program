@@ -1,5 +1,5 @@
 CC=g++ # compiler name
-CCFLAGS=-std=c++11# flags passed to the compiler
+CCFLAGS=-std=c++11 -g# flags passed to the compiler
 
 run: samp
 	./samp -r 44100 -b 8 -c 1 sample_input/beez18sec_44100_signed_8bit_mono

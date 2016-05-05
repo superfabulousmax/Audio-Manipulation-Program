@@ -4,6 +4,7 @@
 #include <vector>
 #include <cstdint>
 #include "FileIO.h"
+#include "Audio.h"
 
 int main(int argc, char *argv[]) {
 	// get command line arguments to do operations here
@@ -16,7 +17,6 @@ int main(int argc, char *argv[]) {
 	std::string soundFile2;
 	std::vector<std::pair<int, int>> v(2);
 	v[0] = std::make_pair (5,1);
-	std::cout << v[0].first <<std::endl;
 
 	if( argc>= 8 ) {
 		samples_per_sec = atoi(argv[2]);
@@ -29,8 +29,9 @@ int main(int argc, char *argv[]) {
 		}
 		soundFile1 = argv[argc -1];
 		int8_t b;
-		readInMonoAudioFile(soundFile1, b);
-	
+		AudioArray <int8_t> array =  readInMonoAudioFile(soundFile1, b);
+		writeOutMonoAudioFile("susan", b, array);
+		 
 
 	}
 

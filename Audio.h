@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <vector>
 namespace urssin001 {
+
 	// core audio template to manipulate mono data
 	
 	template <typename T>
@@ -14,10 +15,12 @@ namespace urssin001 {
 			AudioArray(int N = 0) : size(N) { data_vector.reserve(size); }
 			T & operator[](int index) { return data_vector[index]; }
 			void resizeArray(int N) { size = N; data_vector.resize(size); }
+			int getSize() { return size; }
 	};
 
 	// specialized Audio template to manipulate the data which
 	// consists of 1 pair of samples per time step, L and R
+
 	template <typename T>
 	class AudioArray< std::pair<T, T> > {
 		private:

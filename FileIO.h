@@ -6,6 +6,8 @@
 #include "Audio.h"
 namespace urssin001 {
 
+
+	static int fileSize;
 	template<typename T>
 	AudioArray<T>  readInMonoAudioFile(std::string filename, T bits){
 
@@ -19,14 +21,15 @@ namespace urssin001 {
 			// NumberOfSamples = fileSizeInBytes / (sizeof(intN_t) * channels)
 			readAudio.seekg(0, readAudio.end);
 			int fileSizeInBytes = readAudio.tellg();
+			readAudio.seekg(0, readAudio.beg);
+			fileSize = fileSizeInBytes;
 			int NumberOfSamples = fileSizeInBytes / (sizeof(T) * 1);
+			
 			array.resizeArray(NumberOfSamples);
 
-			for(int i = 0; i < NumberOfSamples; ++i) {
+			
 
-				readAudio >> array[i];
-				std::cerr << (int)array[i] << std::endl;
-			}
+			readAudio.read((char *) &(array[0]), fileSizeInBytes);
 
 
 			readAudio.close();
@@ -36,7 +39,25 @@ namespace urssin001 {
 	}
 
 	void readInStereoAudioFile(std::string filename);
-	void writeOutAudioFile(std::string filename);
+	template<typename T>
+	void writeOutMonoAudioFile(std::string filename, T bits, AudioArray<T> & array) {
+
+		std::ofstream writeAudio(filename+".raw", std::ios::out | std::ios::binary);
+		if(!writeAudio) {
+			std::cerr << "Could not write "+filename << std::endl;
+		}
+		
+		else {
+			
+
+			writeAudio.write((char *) &(array[0]), fileSize);
+			
+
+			writeAudio.close();
+
+		}
+
+	}
 
 
 }
