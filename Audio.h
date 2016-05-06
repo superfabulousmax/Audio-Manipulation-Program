@@ -6,8 +6,7 @@ namespace urssin001 {
 
 	// core audio template to manipulate mono data
 	
-	template <typename T>
-	class AudioArray {
+	template <typename T, int channels = 1> class AudioArray {
 		private:
 			std::vector<T> data_vector;
 			int size;
@@ -15,19 +14,20 @@ namespace urssin001 {
 			AudioArray(int N = 0) : size(N) { data_vector.reserve(size); }
 			T & operator[](int index) { return data_vector[index]; }
 			void resizeArray(int N) { size = N; data_vector.resize(size); }
-			int getSize() { return size; }
+		
 	};
 
 	// specialized Audio template to manipulate the data which
 	// consists of 1 pair of samples per time step, L and R
 
-	template <typename T>
-	class AudioArray< std::pair<T, T> > {
+	template <typename T> class AudioArray< std::pair<T, T>, 2> {
 		private:
 			std::vector<std::pair<T, T> > data_vector;
 			int size;
 		public:
 			AudioArray(int N = 0) : size(N) { data_vector.reserve(size); }
+			std::pair <T, T> & operator[](int index) { return data_vector[index]; }
+			void resizeArray(int N) { size = N; data_vector.resize(size); }
 	};
 
 }

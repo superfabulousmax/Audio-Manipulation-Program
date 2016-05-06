@@ -29,8 +29,8 @@ int main(int argc, char *argv[]) {
 		}
 		soundFile1 = argv[argc -1];
 		int8_t b;
-		AudioArray <int8_t> array =  readInMonoAudioFile(soundFile1, b);
-		writeOutMonoAudioFile("susan", b, array);
+		AudioArray <std::pair<int8_t, int8_t >, 2> array =  readInStereoAudioFile(soundFile1, b);
+		writeOutStereoAudioFile("susan", b, array);
 		 
 
 	}
