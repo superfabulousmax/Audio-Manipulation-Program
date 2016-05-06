@@ -14,6 +14,50 @@ namespace urssin001 {
 			AudioArray(int N = 0) : size(N) { data_vector.reserve(size); }
 			T & operator[](int index) { return data_vector[index]; }
 			void resizeArray(int N) { size = N; data_vector.resize(size); }
+
+			//copy semantics
+			AudioArray(AudioArray <T> & rhs): size(rhs.size) {
+				data_vector.resize(size);
+				for(int i = 0; i < size; ++i) {
+						data_vector[i] = rhs.data_vector[i];
+				}
+			}
+
+			AudioArray& operator=(const AudioArray<T> rhs) {
+				if(this != &rhs) {
+
+					data_vector.clear();
+					size = rhs.size;
+					data_vector.resize(size);
+					for(int i = 0; i < size; ++i) {
+						data_vector[i] = rhs.data_vector[i];
+
+					}
+
+				}
+
+				return *this;
+			}
+
+			// move semantics
+
+			AudioArray(AudioArray<T> && rhs): size(rhs.size), data_vector(std::move(rhs.data_vector)) { }
+
+			AudioArray& operator= (AudioArray<T> && rhs) {
+				if(this != &rhs) {
+					data_vector.clear();
+					size = rhs.size;
+					data_vector.resize(size);
+					data_vector = std::move(rhs.data_vector);
+				}
+
+				return *this;
+
+			}
+			// AudioArray<T> operator * (std::pair <float, float> volume) {
+			// 	A
+
+			// }
 		
 	};
 
