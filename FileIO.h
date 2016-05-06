@@ -74,7 +74,7 @@ namespace urssin001 {
 
 	template<typename T>
 	void writeOutMonoAudioFile(std::string filename, T bits, AudioArray<T> & array) {
-
+		
 		std::ofstream writeAudio(filename+".raw", std::ios::out | std::ios::binary);
 		if(!writeAudio) {
 			std::cerr << "Could not write "+filename << std::endl;

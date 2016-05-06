@@ -2,6 +2,8 @@
 #define AUDIO_H
 #include <cstdint>
 #include <vector>
+#include <iostream>
+#include <assert.h>
 namespace urssin001 {
 
 	// core audio template to manipulate mono data
@@ -54,10 +56,15 @@ namespace urssin001 {
 				return *this;
 
 			}
-			// AudioArray<T> operator * (std::pair <float, float> volume) {
-			// 	A
+			AudioArray<T> operator * (std::pair <float, float> volume) {
+				assert(volume.first >= 0 & volume.first <= 1);
+				AudioArray<T> temp = *this;
+				for(int i = 0; i < size; i++) {
+					temp[i] = temp[i] * volume.first;
+				}
 
-			// }
+				return temp;
+			}
 		
 	};
 

@@ -22,12 +22,31 @@ int main(int argc, char *argv[]) {
 		samples_per_sec = atoi(argv[2]);
 		bit_count = atoi(argv[4]);
 		num_of_channels = atoi(argv[6]);
-		
+		soundFile1 = argv[argc -1];
 		if(argc >= 9)
 		{
-			if(argv[7] == "-o") outFileName = argv[8];
+			if(std::string(argv[7]) == "-o") outFileName = argv[8];
 		}
-		soundFile1 = argv[argc -1];
+		if(argc >= 11){
+
+			if(std::string(argv[7])== "-v") {
+
+				float left = atof(argv[8]);
+				float right = atof(argv[9]);
+				int8_t b;
+				AudioArray <int8_t> array =  readInMonoAudioFile(soundFile1, b);
+				AudioArray <int8_t> newArray = array * std::make_pair(left, right); 
+				
+				writeOutMonoAudioFile("softsusan", b, newArray);
+			}
+			
+			else if(std::string(argv[9])== "-v") {
+
+				
+			}
+
+		}
+		
 		int8_t b;
 		AudioArray <std::pair<int8_t, int8_t >, 2> array =  readInStereoAudioFile(soundFile1, b);
 		writeOutStereoAudioFile("susan", b, array);
