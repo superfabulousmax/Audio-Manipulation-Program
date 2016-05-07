@@ -83,7 +83,7 @@ namespace urssin001 {
 		else {
 			
 
-			writeAudio.write((char *) &(array[0]), fileSize);
+			writeAudio.write((char *) &(array[0]), array.getSize());
 			
 
 			writeAudio.close();

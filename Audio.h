@@ -14,9 +14,9 @@ namespace urssin001 {
 			int size;
 		public:
 			AudioArray(int N = 0) : size(N) { data_vector.reserve(size); }
-			T & operator[](int index) { return data_vector[index]; }
+			T & operator[] (int index) { return data_vector[index]; }
 			void resizeArray(int N) { size = N; data_vector.resize(size); }
-
+			int getSize() { return size; };
 			//copy semantics
 			AudioArray(AudioArray <T> & rhs): size(rhs.size) {
 				data_vector.resize(size);
@@ -25,10 +25,9 @@ namespace urssin001 {
 				}
 			}
 
+			
 			AudioArray& operator=(const AudioArray<T> rhs) {
 				if(this != &rhs) {
-
-					data_vector.clear();
 					size = rhs.size;
 					data_vector.resize(size);
 					for(int i = 0; i < size; ++i) {
@@ -56,6 +55,9 @@ namespace urssin001 {
 				return *this;
 
 			}
+
+			// volume operation
+
 			AudioArray<T> operator * (std::pair <float, float> volume) {
 				assert(volume.first >= 0 & volume.first <= 1);
 				AudioArray<T> temp = *this;
@@ -64,6 +66,21 @@ namespace urssin001 {
 				}
 
 				return temp;
+			}
+
+			// concatenate audio file A and B
+
+			AudioArray<T> operator|(AudioArray<T> A) {
+				assert(this->size == A.size);
+				AudioArray<T> temp = *this;
+				temp.resizeArray(2*size);
+
+				for(int i = 0; i < size; i++) {
+				 	temp[i + size] = A[i];
+				}
+
+				return temp;
+
 			}
 		
 	};

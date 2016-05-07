@@ -27,9 +27,9 @@ int main(int argc, char *argv[]) {
 		{
 			if(std::string(argv[7]) == "-o") outFileName = argv[8];
 		}
-		if(argc >= 11){
+		if(argc >= 10){
 
-			if(std::string(argv[7])== "-v") {
+			if(std::string(argv[7])== "-v" || std::string(argv[9])== "-v") {
 
 				float left = atof(argv[8]);
 				float right = atof(argv[9]);
@@ -39,10 +39,14 @@ int main(int argc, char *argv[]) {
 				
 				writeOutMonoAudioFile("softsusan", b, newArray);
 			}
-			
-			else if(std::string(argv[9])== "-v") {
+			if(std::string(argv[7])== "-cat") {
+				soundFile2 =  argv[argc -2];
+				int8_t b;
+				AudioArray <int8_t> array1 =  readInMonoAudioFile(soundFile1, b);
+				AudioArray <int8_t> array2 =  readInMonoAudioFile(soundFile2, b);
+				AudioArray <int8_t> newArray = array1 | array2; 
+				writeOutMonoAudioFile("catsusan", b, newArray);
 
-				
 			}
 
 		}
