@@ -148,18 +148,20 @@ namespace urssin001 {
 				return temp;
 			}
 
-			// // concatenate audio file A and B
+			// concatenate audio file A and B
 
-			// AudioArray<T> operator|(AudioArray<T> A) {
-			// 	assert(this->size == A.size);
-			// 	AudioArray<T> temp = *this;
-			// 	temp.resizeArray(2*size);
+			AudioArray< std::pair<T, T>, 2> operator|(AudioArray< std::pair<T, T>, 2> A) {
+				assert(this->size == A.size);
+				AudioArray< std::pair<T, T>, 2> temp = *this;
+				temp.resizeArray(2*size);
 
-			// 	for(int i = 0; i < size; i++) {
-			// 	 	temp[i + size] = A[i];
-			// 	}
-			// 	return temp;
-			// }
+				for(int i = 0; i < size; i++) {
+				 	temp[i + size].first = A[i].first;
+				 	temp[i + size].second = A[i].second;
+				}
+				
+				return temp;
+			}
 	};
 
 }

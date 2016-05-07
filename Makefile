@@ -2,7 +2,7 @@ CC=g++ # compiler name
 CCFLAGS=-std=c++11 -g# flags passed to the compiler
 
 run: samp
-	./samp -r 44100 -b 8 -c 2 -v 1f 0.31f sample_input/beez18sec_44100_signed_16bit_stereo
+	./samp -r 44100 -b 8 -c 2 -cat sample_input/beez18sec_44100_signed_16bit_stereo volsusan
 
 samp: Audio.o FileIO.o Driver.o Audio.h FileIO.h
 	$(CC) $(CCFLAGS) Audio.o FileIO.o Driver.o -o samp 

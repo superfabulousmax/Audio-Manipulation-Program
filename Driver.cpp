@@ -41,12 +41,17 @@ int main(int argc, char *argv[]) {
 				writeOutStereoAudioFile("volsusan", b, newArray);
 			}
 			if(std::string(argv[7])== "-cat") {
-				soundFile2 =  argv[argc -2];
-				int8_t b;
-				AudioArray <int8_t> array1 =  readInMonoAudioFile(soundFile1, b);
-				AudioArray <int8_t> array2 =  readInMonoAudioFile(soundFile2, b);
-				AudioArray <int8_t> newArray = array1 | array2; 
-				writeOutMonoAudioFile("catsusan", b, newArray);
+				soundFile2 =  argv[argc - 1];
+				soundFile1 =  argv[argc - 2];
+				// int8_t b;
+				// AudioArray <int8_t> array1 =  readInMonoAudioFile(soundFile1, b);
+				// AudioArray <int8_t> array2 =  readInMonoAudioFile(soundFile2, b);
+				// AudioArray <int8_t> newArray = array1 | array2; 
+				int16_t b;
+				AudioArray <std::pair<int16_t, int16_t >, 2> array1 =  readInStereoAudioFile(soundFile1, b);
+				AudioArray <std::pair<int16_t, int16_t >, 2> array2 =  readInStereoAudioFile(soundFile2, b);
+				AudioArray <std::pair<int16_t, int16_t >, 2> newArray = array1 | array2;
+				writeOutStereoAudioFile("catsusan", b, newArray);
 
 			}
 
