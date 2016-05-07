@@ -27,8 +27,6 @@ namespace urssin001 {
 			
 			array.resizeArray(NumberOfSamples);
 
-			
-
 			readAudio.read((char *) &(array[0]), fileSizeInBytes);
 
 

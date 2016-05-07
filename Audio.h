@@ -4,6 +4,8 @@
 #include <vector>
 #include <iostream>
 #include <assert.h>
+#include <iterator>
+#include <algorithm>
 #include <limits> 
 namespace urssin001 {
 
@@ -83,7 +85,7 @@ namespace urssin001 {
 				return temp;
 			}
 
-			// addd audio file A and B
+			// add audio file A and B
 
 			AudioArray<T> operator+(AudioArray<T> A) {
 				assert(this->size == A.size);
@@ -98,6 +100,36 @@ namespace urssin001 {
 				}
 				return temp;
 			}
+
+			// cut order over range r1 - r2
+
+			AudioArray<T> operator ^ (std::pair <int, int> range) {
+				assert(range.first >= 0 & range.second < this->getSize() & (range.first < range.second));
+				AudioArray<T> temp = *this;
+				int counter = 0;
+				int start = range.first;
+				int end = range.second;
+				std::remove_if( temp.data_vector.begin(), temp.data_vector.end(), 
+					[&counter, start, end] (const T & val)
+					{
+						bool rem = false;
+						if(counter >= start & counter <= end) {
+							rem = true;
+						}
+						
+						++counter;
+
+						return rem;
+
+					}
+				);
+
+				temp.resizeArray( temp.getSize() - (end - start) - 1);
+				
+				return temp;
+
+			}
+
 		
 	};
 
@@ -156,7 +188,7 @@ namespace urssin001 {
 			// volume operation
 
 			AudioArray< std::pair<T, T>, 2> operator * (std::pair <float, float> volume) {
-				assert(volume.first >= 0 & volume.first <= 1);
+				assert(volume.first >= 0 & volume.first <= 1 & volume.second >= 0 & volume.second <= 1);
 				AudioArray< std::pair<T, T>, 2>  temp = *this;
 				for(int i = 0; i < size; i++) {
 					temp[i].first = temp[i].first * volume.first;
