@@ -16,7 +16,7 @@ namespace urssin001 {
 			AudioArray(int N = 0) : size(N) { data_vector.reserve(size); }
 			T & operator[] (int index) { return data_vector[index]; }
 			void resizeArray(int N) { size = N; data_vector.resize(size); }
-			int getSize() { return size; };
+			int getSize() { return size; }
 			//copy semantics
 			AudioArray(AudioArray <T> & rhs): size(rhs.size) {
 				data_vector.resize(size);
@@ -96,6 +96,48 @@ namespace urssin001 {
 			AudioArray(int N = 0) : size(N) { data_vector.reserve(size); }
 			std::pair <T, T> & operator[](int index) { return data_vector[index]; }
 			void resizeArray(int N) { size = N; data_vector.resize(size); }
+			int getSize() { return size; }
+
+			//copy semantics
+			AudioArray(AudioArray < std::pair<T, T>, 2> & rhs): size(rhs.size) {
+				data_vector.resize(size);
+				for(int i = 0; i < size; ++i) {
+						data_vector[i].first = rhs.data_vector[i].first;
+						data_vector[i].second = rhs.data_vector[i].second;
+				}
+			}
+
+			
+			AudioArray& operator=(const AudioArray< std::pair<T, T>, 2> rhs) {
+				if(this != &rhs) {
+					size = rhs.size;
+					data_vector.resize(size);
+					for(int i = 0; i < size; ++i) {
+						data_vector[i].first = rhs.data_vector[i].first;
+						data_vector[i].second = rhs.data_vector[i].second;
+
+					}
+
+				}
+
+				return *this;
+			}
+
+			// move semantics
+
+			AudioArray(AudioArray< std::pair<T, T>, 2> && rhs): size(rhs.size), data_vector(std::move(rhs.data_vector)) { }
+
+			AudioArray& operator= (AudioArray< std::pair<T, T>, 2> && rhs) {
+				if(this != &rhs) {
+					data_vector.clear();
+					size = rhs.size;
+					data_vector.resize(size);
+					data_vector = std::move(rhs.data_vector);
+				}
+
+				return *this;
+
+			}
 	};
 
 }
