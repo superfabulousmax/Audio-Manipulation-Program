@@ -33,11 +33,12 @@ int main(int argc, char *argv[]) {
 
 				float left = atof(argv[8]);
 				float right = atof(argv[9]);
-				int8_t b;
-				AudioArray <int8_t> array =  readInMonoAudioFile(soundFile1, b);
-				AudioArray <int8_t> newArray = array * std::make_pair(left, right); 
+				int16_t b;
+				AudioArray <std::pair<int16_t, int16_t >, 2> array =  readInStereoAudioFile(soundFile1, b);
+				//AudioArray <int8_t> array =  readInMonoAudioFile(soundFile1, b);
+				AudioArray <std::pair<int16_t, int16_t > , 2>newArray = array * std::make_pair(left, right); 
 				
-				writeOutMonoAudioFile("softsusan", b, newArray);
+				writeOutStereoAudioFile("volsusan", b, newArray);
 			}
 			if(std::string(argv[7])== "-cat") {
 				soundFile2 =  argv[argc -2];
@@ -51,9 +52,9 @@ int main(int argc, char *argv[]) {
 
 		}
 		
-		int8_t b;
-		AudioArray <std::pair<int8_t, int8_t >, 2> array =  readInStereoAudioFile(soundFile1, b);
-		writeOutStereoAudioFile("susan", b, array);
+		// int8_t b;
+		// AudioArray <std::pair<int8_t, int8_t >, 2> array =  readInStereoAudioFile(soundFile1, b);
+		// writeOutStereoAudioFile("susan", b, array);
 		 
 
 	}

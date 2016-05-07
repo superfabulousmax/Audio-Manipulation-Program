@@ -102,7 +102,7 @@ namespace urssin001 {
 		
 		else {
 			
-			int NumberOfSamples = fileSize / (sizeof(T) * 2);
+			int NumberOfSamples = array.getSize();
 		
 			
 			for(int i = 0; i < NumberOfSamples; i++) {

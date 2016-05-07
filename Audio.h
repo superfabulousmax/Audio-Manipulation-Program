@@ -78,9 +78,7 @@ namespace urssin001 {
 				for(int i = 0; i < size; i++) {
 				 	temp[i + size] = A[i];
 				}
-
 				return temp;
-
 			}
 		
 	};
@@ -117,9 +115,7 @@ namespace urssin001 {
 						data_vector[i].second = rhs.data_vector[i].second;
 
 					}
-
 				}
-
 				return *this;
 			}
 
@@ -138,6 +134,32 @@ namespace urssin001 {
 				return *this;
 
 			}
+
+			// volume operation
+
+			AudioArray< std::pair<T, T>, 2> operator * (std::pair <float, float> volume) {
+				assert(volume.first >= 0 & volume.first <= 1);
+				AudioArray< std::pair<T, T>, 2>  temp = *this;
+				for(int i = 0; i < size; i++) {
+					temp[i].first = temp[i].first * volume.first;
+					temp[i].second = temp[i].second * volume.second;
+				}
+
+				return temp;
+			}
+
+			// // concatenate audio file A and B
+
+			// AudioArray<T> operator|(AudioArray<T> A) {
+			// 	assert(this->size == A.size);
+			// 	AudioArray<T> temp = *this;
+			// 	temp.resizeArray(2*size);
+
+			// 	for(int i = 0; i < size; i++) {
+			// 	 	temp[i + size] = A[i];
+			// 	}
+			// 	return temp;
+			// }
 	};
 
 }
