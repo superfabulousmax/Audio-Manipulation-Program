@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
 				
 				writeOutStereoAudioFile("volsusan", b, newArray);
 			}
-			if(std::string(argv[7])== "-cat") {
+			if(std::string(argv[7])== "-cat" || std::string(argv[9])== "-cat") {
 				soundFile2 =  argv[argc - 1];
 				soundFile1 =  argv[argc - 2];
 				// int8_t b;
@@ -53,6 +53,16 @@ int main(int argc, char *argv[]) {
 				AudioArray <std::pair<int16_t, int16_t >, 2> newArray = array1 | array2;
 				writeOutStereoAudioFile("catsusan", b, newArray);
 
+			}
+
+			if(std::string(argv[7])== "-add" || std::string(argv[9])== "-add") {
+				soundFile2 =  argv[argc - 1];
+				soundFile1 =  argv[argc - 2];
+				int8_t b;
+				AudioArray <int8_t> array1 =  readInMonoAudioFile(soundFile1, b);
+				AudioArray <int8_t> array2 =  readInMonoAudioFile(soundFile2, b);
+				AudioArray <int8_t> newArray = array1 + array2; 
+				writeOutMonoAudioFile("addsusan", b, newArray);
 			}
 
 		}

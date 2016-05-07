@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <assert.h>
+#include <limits> 
 namespace urssin001 {
 
 	// core audio template to manipulate mono data
@@ -75,8 +76,25 @@ namespace urssin001 {
 				AudioArray<T> temp = *this;
 				temp.resizeArray(2*size);
 
+
 				for(int i = 0; i < size; i++) {
 				 	temp[i + size] = A[i];
+				}
+				return temp;
+			}
+
+			// addd audio file A and B
+
+			AudioArray<T> operator+(AudioArray<T> A) {
+				assert(this->size == A.size);
+				AudioArray<T> temp = *this;
+				const T min = std::numeric_limits<T>::min();
+				const T max = std::numeric_limits<T>::max();
+				
+				for(int i = 0; i < size; i++) {
+				 	if(temp[i] + A[i] > max) temp[i] = max;
+				 	else if(temp[i] + A[i] < min) temp[i] = min;
+				 	else temp[i] += A[i];
 				}
 				return temp;
 			}
@@ -159,7 +177,7 @@ namespace urssin001 {
 				 	temp[i + size].first = A[i].first;
 				 	temp[i + size].second = A[i].second;
 				}
-				
+
 				return temp;
 			}
 	};
