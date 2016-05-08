@@ -170,7 +170,7 @@ namespace urssin001 {
 			}
 
 			// radd
-			AudioArray<T> rangedAdd(AudioArray<T> & other, std::pair <int, int> range1, std::pair <int, int> range2) {
+			AudioArray<T>& rangedAdd(AudioArray<T> & other, std::pair <int, int> range1, std::pair <int, int> range2) {
 				// Length of the audio clip in seconds = NumberOfSamples / (float) samplingRate.
 				int start1 = range1.first * samplingRate;
 				int end1 = range1.second * samplingRate;
@@ -187,7 +187,8 @@ namespace urssin001 {
 				std::copy(this->data_vector.begin() + start1, this->data_vector.begin() + start1 + end1 + 1, temp1.data_vector.begin());
 				std::copy(other.data_vector.begin() + start2, other.data_vector.begin() + start2 + end2 + 1, temp2.data_vector.begin());
 				AudioArray<T> result = temp1 + temp2;
-				return result;
+				*this = result;
+				return *this;
 
 			}
 
