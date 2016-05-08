@@ -371,8 +371,9 @@ namespace urssin001 {
 				assert(volume.first >= 0 & volume.first <= 1 & volume.second >= 0 & volume.second <= 1);
 				AudioArray< std::pair<T, T>, 2>  temp = *this;
 				for(int i = 0; i < size; i++) {
-					temp[i].first = temp[i].first * volume.first;
-					temp[i].second = temp[i].second * volume.second;
+					temp[i].first = temp[i].first * 1.0f * volume.first;
+					temp[i].second =temp[i].second * 1.0f * volume.second;
+					
 				}
 
 				return temp;
