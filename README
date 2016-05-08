@@ -1,0 +1,27 @@
+****** Files ******
+
+Makefile:
+
+	To run driver class type "make" - this will run samp(exe) with parameters specified in the makefile.
+	Type "make clean" to remove .o files and samp
+	To enter different audio operations type "./samp <audio specifications> <-o outputfilename> <operation> <soundfile1> [<soundfile2>]". 
+	For e.g. type "./samp -r 44100 -b 16 -c 2 -o out -norm 20.0f 2.0f sample_input/beez18sec_44100_signed_16bit_stereo".
+	NOTE: do not include any extensions when specifying image file names or filter file names!
+
+	To run unit tests type "make tests".
+	Type "make testsClean" to remove .o files and tests(exe).
+
+Audio.cpp and Audio.h:
+	Templated class objects to represent audio data and perform operations on it. 
+
+Driver.cpp: 
+	Point of entry with main method. Use this as interface to audio operations.
+
+UnitTests.cpp: 
+	File with unit test cases as specified in the assignment brief.
+
+
+FIleIO.cpp and FileIO.h: 
+	Handles all file input and output for Audio classes i.e. reading in an audio file and writing it out. 
+
+*****************
