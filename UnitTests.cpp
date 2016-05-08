@@ -92,6 +92,18 @@ TEST_CASE("Stereo audio concatenation","This tests that concatenation of two ste
 
 }
 
+TEST_CASE("Mono audio volume factor","This tests that the volume factor operation for mono audio files works correctly.")
+{
+	std::vector<int8_t> buffer = {int8_t(1), int8_t(2)};
+	std::vector<int8_t> volBuffer = {int8_t(1 * 0.2f), int8_t(2 * 0.2f)};
+	AudioArray <int8_t> array(buffer);
+	AudioArray <int8_t> a = array * std::make_pair(0.2f, 0.5f); 
+
+	for(int i = 0; i < a.getSize(); ++i) {
+		REQUIRE(a[i] == volBuffer[i]);
+	}
+}
+
 TEST_CASE("Mono audio cut","This tests that the cutting of over the given range for mono audio files works correctly.")
 {
 	std::vector<int8_t> buffer = {int8_t(1), int8_t(2), int8_t(3), int8_t(4)};
