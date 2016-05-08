@@ -384,7 +384,6 @@ namespace urssin001 {
 				assert(this->size == A.size);
 				AudioArray< std::pair<T, T>, 2> temp = *this;
 				temp.resizeArray(2*size);
-
 				for(int i = 0; i < size; i++) {
 				 	temp[i + size].first = A[i].first;
 				 	temp[i + size].second = A[i].second;

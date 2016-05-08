@@ -102,7 +102,6 @@ namespace urssin001 {
 			
 			int NumberOfSamples = array.getSize();
 			
-			
 			for(int i = 0; i < NumberOfSamples; i++) {
 				writeAudio.write((char *) &(array[i].first), sizeof(T) );
 				writeAudio.write((char *) &(array[i].second), sizeof(T) );

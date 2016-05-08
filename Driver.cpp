@@ -40,76 +40,154 @@ int main(int argc, char *argv[]) {
 	}
 
 	if (s == 10) {
-		
-		if(num_of_channels == 1) {
 
-			if(bit_count == 8) {
-				if(std::string(v[7]) == "-add") {
+		if(std::string(v[7]) == "-add") {
+
+			if(num_of_channels == 1) {
+
+				if(bit_count == 8) {
+					
+						soundFile1 = v[s - 2];
+						soundFile2 = v[s - 1];
+						int8_t b = 8;
+						AudioArray <int8_t> array1 =  readInMonoAudioFile(soundFile1, b, samples_per_sec);
+						AudioArray <int8_t> array2 =  readInMonoAudioFile(soundFile2, b, samples_per_sec);
+						AudioArray <int8_t> newArray = array1 + array2; 
+						writeOutMonoAudioFile(outFileName, b, newArray);
+
+					}
+				
+
+				else if (bit_count == 16) {
+
 					soundFile1 = v[s - 2];
 					soundFile2 = v[s - 1];
-					int8_t b = 8;
-					AudioArray <int8_t> array1 =  readInMonoAudioFile(soundFile1, b, samples_per_sec);
-					AudioArray <int8_t> array2 =  readInMonoAudioFile(soundFile2, b, samples_per_sec);
-					AudioArray <int8_t> newArray = array1 + array2; 
+					int16_t b = 16;
+					AudioArray <int16_t> array1 =  readInMonoAudioFile(soundFile1, b, samples_per_sec);
+					AudioArray <int16_t> array2 =  readInMonoAudioFile(soundFile2, b, samples_per_sec);
+					AudioArray <int16_t> newArray = array1 + array2; 
 					writeOutMonoAudioFile(outFileName, b, newArray);
 
 				}
-			}
 
-			else if (bit_count == 16) {
+				else{
 
-				soundFile1 = v[s - 2];
-				soundFile2 = v[s - 1];
-				int16_t b = 16;
-				AudioArray <int16_t> array1 =  readInMonoAudioFile(soundFile1, b, samples_per_sec);
-				AudioArray <int16_t> array2 =  readInMonoAudioFile(soundFile2, b, samples_per_sec);
-				AudioArray <int16_t> newArray = array1 + array2; 
-				writeOutMonoAudioFile(outFileName, b, newArray);
+					std::cerr << "Invalid bit number entered." << std::endl;
+					return 1;
+				}
 
-			}
+			} // end mono channel
 
-			else{
+			else if(num_of_channels == 2){
 
-				std::cerr << "Invalid bit number entered." << std::endl;
-				return 1;
-			}
+				if(bit_count == 8) {
+					if(std::string(v[7]) == "-add") {
+						soundFile1 = v[s - 2];
+						soundFile2 = v[s - 1];
+						int8_t b = 8;
+						AudioArray <std::pair<int8_t, int8_t>, 2> array1 =  readInStereoAudioFile(soundFile1, b, samples_per_sec);
+						AudioArray <std::pair<int8_t, int8_t>, 2> array2 =  readInStereoAudioFile(soundFile2, b, samples_per_sec);
+						AudioArray <std::pair<int8_t, int8_t>, 2> newArray = array1 + array2; 
+						writeOutStereoAudioFile(outFileName, b, newArray);
 
-		} // end mono channel
+					}
+				}
 
-		else if(num_of_channels == 2){
+				else if (bit_count == 16) {
 
-			if(bit_count == 8) {
-				if(std::string(v[7]) == "-add") {
+					soundFile1 = v[s - 2];
+					soundFile2 = v[s - 1];
+					int16_t b = 16;
+					AudioArray <std::pair<int16_t, int16_t>, 2> array1 =  readInStereoAudioFile(soundFile1, b, samples_per_sec);
+					AudioArray <std::pair<int16_t, int16_t>, 2> array2 =  readInStereoAudioFile(soundFile2, b, samples_per_sec);
+					AudioArray <std::pair<int16_t, int16_t>, 2> newArray = array1 + array2; 
+					writeOutStereoAudioFile(outFileName, b, newArray);
+
+				}
+
+				else{
+
+					std::cerr << "Invalid bit number entered." << std::endl;
+					return 1;
+				}
+
+			}// end stereo channel
+
+		}// end add operation
+
+		if(std::string(v[7]) == "-cat") {
+
+			if(num_of_channels == 1) {
+
+				if(bit_count == 8) {
+					
+						soundFile1 = v[s - 2];
+						soundFile2 = v[s - 1];
+						int8_t b = 8;
+						AudioArray <int8_t> array1 =  readInMonoAudioFile(soundFile1, b, samples_per_sec);
+						AudioArray <int8_t> array2 =  readInMonoAudioFile(soundFile2, b, samples_per_sec);
+						AudioArray <int8_t> newArray = array1 | array2; 
+						writeOutMonoAudioFile(outFileName, b, newArray);
+
+					}
+				
+
+				else if (bit_count == 16) {
+
+					soundFile1 = v[s - 2];
+					soundFile2 = v[s - 1];
+					int16_t b = 16;
+					AudioArray <int16_t> array1 =  readInMonoAudioFile(soundFile1, b, samples_per_sec);
+					AudioArray <int16_t> array2 =  readInMonoAudioFile(soundFile2, b, samples_per_sec);
+					AudioArray <int16_t> newArray = array1 | array2; 
+					writeOutMonoAudioFile(outFileName, b, newArray);
+
+				}
+
+				else{
+
+					std::cerr << "Invalid bit number entered." << std::endl;
+					return 1;
+				}
+
+			} // end mono channel
+
+			else if(num_of_channels == 2){
+
+				if(bit_count == 8) {
+					
 					soundFile1 = v[s - 2];
 					soundFile2 = v[s - 1];
 					int8_t b = 8;
 					AudioArray <std::pair<int8_t, int8_t>, 2> array1 =  readInStereoAudioFile(soundFile1, b, samples_per_sec);
 					AudioArray <std::pair<int8_t, int8_t>, 2> array2 =  readInStereoAudioFile(soundFile2, b, samples_per_sec);
-					AudioArray <std::pair<int8_t, int8_t>, 2> newArray = array1 + array2; 
+					AudioArray <std::pair<int8_t, int8_t>, 2> newArray = array1 | array2; 
+					writeOutStereoAudioFile(outFileName, b, newArray);
+
+	
+				}
+
+				else if (bit_count == 16) {
+
+					soundFile1 = v[s - 2];
+					soundFile2 = v[s - 1];
+					int16_t b = 16;
+					AudioArray <std::pair<int16_t, int16_t>, 2> array1 =  readInStereoAudioFile(soundFile1, b, samples_per_sec);
+					AudioArray <std::pair<int16_t, int16_t>, 2> array2 =  readInStereoAudioFile(soundFile2, b, samples_per_sec);
+					AudioArray <std::pair<int16_t, int16_t>, 2> newArray = array1 | array2; 
 					writeOutStereoAudioFile(outFileName, b, newArray);
 
 				}
-			}
 
-			else if (bit_count == 16) {
+				else{
 
-				soundFile1 = v[s - 2];
-				soundFile2 = v[s - 1];
-				int16_t b = 16;
-				AudioArray <std::pair<int16_t, int16_t>, 2> array1 =  readInStereoAudioFile(soundFile1, b, samples_per_sec);
-				AudioArray <std::pair<int16_t, int16_t>, 2> array2 =  readInStereoAudioFile(soundFile2, b, samples_per_sec);
-				AudioArray <std::pair<int16_t, int16_t>, 2> newArray = array1 + array2; 
-				writeOutStereoAudioFile(outFileName, b, newArray);
+					std::cerr << "Invalid bit number entered." << std::endl;
+					return 1;
+				}
 
-			}
+			}// end stereo channel
 
-			else{
-
-				std::cerr << "Invalid bit number entered." << std::endl;
-				return 1;
-			}
-
-		}// end stereo channel
+		}// end cat operation
 
 	} // end s = 10
 
