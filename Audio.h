@@ -180,7 +180,7 @@ namespace urssin001 {
 				AudioArray<T> temp = *this;
 				int M = temp.getSize();
 				float result = std::accumulate(temp.data_vector.begin(), temp.data_vector.end(), 0,
-						[](int sum, const T & val)
+						[](const int & sum, const T & val)
 						{
 							return sum + val * val;
 
