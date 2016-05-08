@@ -15,8 +15,19 @@ TEST_CASE("Mono audio add","This tests that the adding of two mono audio files w
 	AudioArray <int8_t> array1(buffer1);
 	AudioArray <int8_t> array2(buffer2);
 	AudioArray <int8_t> add = array1 + array2;
+
+	// boundary case
+
+	std::vector<int8_t> buffer3 = {INT8_MIN, INT8_MAX};
+	std::vector<int8_t> buffer4 = {int8_t(-3), int8_t(4)};
+	std::vector<int8_t> boundaryBuffer = {INT8_MIN, INT8_MAX};
+	AudioArray <int8_t> array3(buffer3);
+	AudioArray <int8_t> array4(buffer4);
+	AudioArray <int8_t> bAdd = array3 + array4;
+
 	for(int i = 0; i < add.getSize(); ++i) {
 		REQUIRE(add[i] == addBuffer[i]);
+		REQUIRE(bAdd[i] == boundaryBuffer[i]);
 	}
 
 }
