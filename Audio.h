@@ -341,6 +341,21 @@ namespace urssin001 {
 				return temp;
 
 			}
+
+			float computeRMS() {
+				AudioArray<std::pair<T, T>, 2>  temp = *this;
+				int M = temp.getSize();
+				float result = std::accumulate(temp.data_vector.begin(), temp.data_vector.end(), 0,
+						[](int sum, const std::pair<T, T> & val)
+						{
+							return sum + (val.first * val.first) + (val.second * val.second);
+
+						}
+				);
+
+				return std::sqrt((1.0f/2*M) * result);
+
+			}
 	};
 
 }

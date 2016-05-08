@@ -140,6 +140,14 @@ TEST_CASE("Mono audio rms","This tests that the calculation of RMS for mono audi
 	REQUIRE(array.computeRMS() == result);
 }
 
+TEST_CASE("Stereo audio rms","This tests that the calculation of RMS for stereo audio files works correctly.")
+{
+	std::vector<std::pair<int8_t, int8_t >> buffer = {std::make_pair(int8_t(1), int8_t(2))};
+	AudioArray <std::pair<int8_t, int8_t >, 2> array(buffer);
+	float result = std::sqrt(0.5f * (1 + 4));
+	REQUIRE(array.computeRMS() == result);
+}
+
 
 
 TEST_CASE("Mono audio ranged add","This tests that ranged add of two stereo audio files works correctly.")
