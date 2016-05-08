@@ -75,6 +75,18 @@ TEST_CASE("Mono audio concatenation","This tests that concatenation of two mono 
 
 }
 
+TEST_CASE("Mono audio reverse","This tests that reverse of mono audio files works correctly.")
+{
+	std::vector<int8_t> buffer = {int8_t(1), int8_t(2)};
+	std::vector<int8_t> revBuffer = {int8_t(2), int8_t(1)};
+	AudioArray <int8_t> array(buffer);
+	AudioArray <int8_t> reverse = array.reverseAudio();
+	for(int i = 0; i < reverse.getSize(); ++i) {
+		REQUIRE(reverse[i] == revBuffer[i]);
+	}
+
+}
+
 TEST_CASE("Stereo audio concatenation","This tests that concatenation of two stereo audio files works correctly.")
 {
 
