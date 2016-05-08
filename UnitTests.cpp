@@ -22,7 +22,7 @@ TEST_CASE("Mono audio concatenation","This that concatenation of two mono audio 
 
 }
 
-TEST_CASE("Stereo audio concatenation","This that concatenation of two stereo audio files works correctly.")
+TEST_CASE("Stereo audio concatenation","This tests that concatenation of two stereo audio files works correctly.")
 {
 
 	std::vector<std::pair<int16_t, int16_t >> buffer1 = {std::make_pair(int8_t(1), int8_t(2))};
@@ -35,6 +35,24 @@ TEST_CASE("Stereo audio concatenation","This that concatenation of two stereo au
 	for(int i = 0; i < cat.getSize(); ++i) {
 		REQUIRE(cat[i].first == catBuffer[i].first);
 		REQUIRE(cat[i].second == catBuffer[i].second);
+	}
+
+}
+
+TEST_CASE("Mono audio ranged add","This tests that ranged add of two stereo audio files works correctly.")
+{
+
+	std::vector<int8_t> buffer1 = {int8_t(1), int8_t(2), int8_t(9), int8_t(8)};
+	std::vector<int8_t> buffer2 = {int8_t(3), int8_t(4), int8_t(1), int8_t(2)};
+	std::vector<int8_t> rangedAdd = {int8_t(6), int8_t(10), int8_t(10)};
+	std::pair<int, int> range1 = std::make_pair(1, 3);
+	AudioArray <int8_t> array1(buffer1);
+	AudioArray <int8_t> array2(buffer2);
+	array1.setSamplingRate(1);
+	array2.setSamplingRate(1);
+	AudioArray <int8_t> result = array1.rangedAdd(array2, range1, range1);
+	for(int i = 0; i < result.getSize(); ++i) {
+		REQUIRE(result[i] == rangedAdd[i]);
 	}
 
 }

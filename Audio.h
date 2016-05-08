@@ -17,15 +17,18 @@ namespace urssin001 {
 		private:
 			std::vector<T> data_vector;
 			int size;
+			int samplingRate;
 		public:
-			AudioArray(int N = 0) : size(N) { data_vector.reserve(size); }
+			AudioArray(int N = 0) : size(N) { data_vector.reserve(size); samplingRate = 44100; }
 			// constructor for unit tests
 			AudioArray(std::vector<T> customBuffer): data_vector(customBuffer), size(customBuffer.size()) { }
 			T & operator[] (int index) { return data_vector[index]; }
 			void resizeArray(int N) { size = N; data_vector.resize(size); }
 			int getSize() { return size; }
+			void setSamplingRate(int rate) { samplingRate = rate; } 
+
 			//copy semantics
-			AudioArray(AudioArray <T> & rhs): size(rhs.size) {
+			AudioArray(AudioArray <T> & rhs): size(rhs.size), samplingRate(rhs.samplingRate) {
 				data_vector.resize(size);
 				for(int i = 0; i < size; ++i) {
 						data_vector[i] = rhs.data_vector[i];
@@ -36,6 +39,7 @@ namespace urssin001 {
 			AudioArray& operator=(const AudioArray<T> rhs) {
 				if(this != &rhs) {
 					size = rhs.size;
+					samplingRate = rhs.samplingRate;
 					data_vector.resize(size);
 					for(int i = 0; i < size; ++i) {
 						data_vector[i] = rhs.data_vector[i];
@@ -49,12 +53,13 @@ namespace urssin001 {
 
 			// move semantics
 
-			AudioArray(AudioArray<T> && rhs): size(rhs.size), data_vector(std::move(rhs.data_vector)) { }
+			AudioArray(AudioArray<T> && rhs): size(rhs.size), samplingRate(rhs.samplingRate) , data_vector(std::move(rhs.data_vector)) { }
 
 			AudioArray& operator= (AudioArray<T> && rhs) {
 				if(this != &rhs) {
 					data_vector.clear();
 					size = rhs.size;
+					samplingRate = rhs.samplingRate;
 					data_vector.resize(size);
 					data_vector = std::move(rhs.data_vector);
 				}
@@ -163,15 +168,28 @@ namespace urssin001 {
 				return std::sqrt((1.0f/M) * result);
 
 			}
+
 			// radd
-			// AudioArray<T> operator \ (std::pair <int, int> range) {
-			// 	assert(range.first >= 0 & range.second < this->getSize() & (range.first < range.second));
+			AudioArray<T> rangedAdd(AudioArray<T> & other, std::pair <int, int> range1, std::pair <int, int> range2) {
+				// Length of the audio clip in seconds = NumberOfSamples / (float) samplingRate.
+				int start1 = range1.first * samplingRate;
+				int end1 = range1.second * samplingRate;
+				int start2 = range2.first * samplingRate;
+				int end2 = range2.second * samplingRate;
+				assert((end1 - start1) == (end2 - start2));
+				
+				AudioArray<T> temp1 = *this;
+				AudioArray<T> temp2 = other;
 
-			// 	AudioArray<T> temp = *this;
+				temp1.resizeArray(end1 - start1 + 1);
+				temp2.resizeArray(end2 - start2 + 1);
 
-			// 	return temp;
+				std::copy(this->data_vector.begin() + start1, this->data_vector.begin() + start1 + end1 + 1, temp1.data_vector.begin());
+				std::copy(other.data_vector.begin() + start2, other.data_vector.begin() + start2 + end2 + 1, temp2.data_vector.begin());
+				AudioArray<T> result = temp1 + temp2;
+				return result;
 
-			// }
+			}
 
 		
 	};
