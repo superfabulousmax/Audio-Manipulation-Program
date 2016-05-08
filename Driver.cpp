@@ -459,7 +459,75 @@ int main(int argc, char *argv[]) {
 			}// end stereo channel
 		} // end vol op
 
+		if(std::string(v[7]) == "-norm") {
+			soundFile1 = v[s - 1];
+			float start = atof(v[8].c_str());
+			float end = atof(v[9].c_str());
+			std::pair< float , float > desired = std::make_pair(start, end);
 
+			if(num_of_channels == 1) {
+
+				if(bit_count == 8) {
+					
+						int8_t b = 8;
+						AudioArray <int8_t> array =  readInMonoAudioFile(soundFile1, b, samples_per_sec);
+						AudioArray <int8_t> newArray = array.norm(start); 
+						writeOutMonoAudioFile(outFileName, b, newArray);
+
+					}
+				
+
+				else if (bit_count == 16) {
+
+					
+					int16_t b = 16;
+					AudioArray <int16_t> array =  readInMonoAudioFile(soundFile1, b, samples_per_sec);
+					AudioArray <int16_t> newArray = array.norm(start); 
+					writeOutMonoAudioFile(outFileName, b, newArray);
+
+				}
+
+				else{
+
+					std::cerr << "Invalid bit number entered." << std::endl;
+					return 1;
+				}
+
+			} // end mono channel
+
+			else if(num_of_channels == 2){
+
+				if(bit_count == 8) {
+					
+					
+					int8_t b = 8;
+					AudioArray <std::pair<int8_t, int8_t>, 2> array =  readInStereoAudioFile(soundFile1, b, samples_per_sec);
+					AudioArray <std::pair<int8_t, int8_t>, 2> newArray = array.norm(desired); 
+					writeOutStereoAudioFile(outFileName, b, newArray);
+
+	
+				}
+
+				else if (bit_count == 16) {
+
+					
+					int16_t b = 16;
+					AudioArray <std::pair<int16_t, int16_t>, 2> array =  readInStereoAudioFile(soundFile1, b, samples_per_sec);
+					AudioArray <std::pair<int16_t, int16_t>, 2> newArray = array.norm(desired); 
+					writeOutStereoAudioFile(outFileName, b, newArray);
+
+				}
+
+				else{
+
+					std::cerr << "Invalid bit number entered." << std::endl;
+					return 1;
+				}
+
+			}// end stereo channel
+
+
+		} //  end norm op
 
 	} // end s = 11
 
@@ -542,99 +610,6 @@ int main(int argc, char *argv[]) {
 		} // end radd op
 
 	} // end s = 14
-
-	// if( argc>= 8 ) {
-	// 	samples_per_sec = atoi(argv[2]);
-	// 	bit_count = atoi(argv[4]);
-	// 	num_of_channels = atoi(argv[6]);
-	// 	soundFile1 = argv[argc -1];
-	// 	if(argc >= 9)
-	// 	{
-	// 		if(std::string(argv[7])== "-rev") {
-			
-	// 			int8_t b;
-	// 			AudioArray <int8_t> array =  readInMonoAudioFile(soundFile1, b);
-	// 			AudioArray <int8_t> newArray = array.reverseAudio();
-	// 			writeOutMonoAudioFile("revsusan", b, newArray);
-	// 		}
-
-	// 		if(std::string(argv[7])== "-rms") {
-			
-	// 			int8_t b;
-	// 			AudioArray <int8_t> array =  readInMonoAudioFile(soundFile1, b);
-	// 			float rms = array.computeRMS();
-	// 			std::cout << "Computed RMS is: " << rms << std::endl;
-	// 		}
-	// 	}
-	// 	if(argc >= 10){
-
-	// 		if(std::string(argv[7])== "-v") {
-
-	// 			float left = atof(argv[8]);
-	// 			float right = atof(argv[9]);
-	// 			int16_t b;
-	// 			AudioArray <std::pair<int16_t, int16_t >, 2> array =  readInStereoAudioFile(soundFile1, b);
-	// 			//AudioArray <int8_t> array =  readInMonoAudioFile(soundFile1, b);
-	// 			AudioArray <std::pair<int16_t, int16_t > , 2>newArray = array * std::make_pair(left, right); 
-				
-	// 			writeOutStereoAudioFile("volsusan", b, newArray);
-	// 		}
-
-	// 		if(std::string(argv[7])== "-cut") {
-	// 			int start = atoi(argv[8]);
-	// 			int end = atoi(argv[9]);
-	// 			int8_t b;
-	// 			AudioArray <int8_t> array =  readInMonoAudioFile(soundFile1, b);
-	// 			AudioArray <int8_t> newArray = array ^ std::make_pair(start, end); 
-	// 			writeOutMonoAudioFile("cutsusan", b, newArray);
-	// 		}
-
-	// 		if(std::string(argv[7])== "-cat") {
-	// 			soundFile2 =  argv[argc - 1];
-	// 			soundFile1 =  argv[argc - 2];
-	// 			// int8_t b;
-	// 			// AudioArray <int8_t> array1 =  readInMonoAudioFile(soundFile1, b);
-	// 			// AudioArray <int8_t> array2 =  readInMonoAudioFile(soundFile2, b);
-	// 			// AudioArray <int8_t> newArray = array1 | array2; 
-	// 			int16_t b;
-	// 			AudioArray <std::pair<int16_t, int16_t >, 2> array1 =  readInStereoAudioFile(soundFile1, b);
-	// 			AudioArray <std::pair<int16_t, int16_t >, 2> array2 =  readInStereoAudioFile(soundFile2, b);
-	// 			AudioArray <std::pair<int16_t, int16_t >, 2> newArray = array1 | array2;
-	// 			writeOutStereoAudioFile("catsusan", b, newArray);
-
-	// 		}
-
-	// 		if(std::string(argv[7])== "-add") {
-	// 			soundFile2 =  argv[argc - 1];
-	// 			soundFile1 =  argv[argc - 2];
-	// 			int8_t b;
-	// 			AudioArray <int8_t> array1 =  readInMonoAudioFile(soundFile1, b);
-	// 			AudioArray <int8_t> array2 =  readInMonoAudioFile(soundFile2, b);
-	// 			AudioArray <int8_t> newArray = array1 + array2; 
-	// 			writeOutMonoAudioFile("addsusan", b, newArray);
-	// 		}
-
-
-	// 	}
-	// 	if(argc >= 12){
-	// 		if(std::string(argv[7])== "-radd") {
-	// 			int start = atoi(argv[8]);
-	// 			int end = atoi(argv[9]);
-	// 			soundFile2 =  argv[argc - 1];
-	// 			soundFile1 =  argv[argc - 2];
-
-	// 		}
-
-	// 	}
-		
-	// 	// int8_t b;
-	// 	// AudioArray <std::pair<int8_t, int8_t >, 2> array =  readInStereoAudioFile(soundFile1, b);
-	// 	// writeOutStereoAudioFile("susan", b, array);
-		 
-
-	// }
-
-	
 
 	return 0;
 }
