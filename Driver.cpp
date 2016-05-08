@@ -39,6 +39,72 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
+	if (s == 9) {
+		if(std::string(v[7]) == "-rev") {
+			soundFile1 = v[s - 1];
+			if(num_of_channels == 1) {
+
+				if(bit_count == 8) {
+					
+						int8_t b = 8;
+						AudioArray <int8_t> array =  readInMonoAudioFile(soundFile1, b, samples_per_sec);
+						AudioArray <int8_t> newArray = array.reverseAudio(); 
+						writeOutMonoAudioFile(outFileName, b, newArray);
+
+					}
+				
+
+				else if (bit_count == 16) {
+
+					int16_t b = 16;
+					AudioArray <int16_t> array =  readInMonoAudioFile(soundFile1, b, samples_per_sec);
+					AudioArray <int16_t> newArray = array.reverseAudio();
+					writeOutMonoAudioFile(outFileName, b, newArray);
+
+				}
+
+				else{
+
+					std::cerr << "Invalid bit number entered." << std::endl;
+					return 1;
+				}
+
+			} // end mono channel
+
+			else if(num_of_channels == 2){
+
+				if(bit_count == 8) {
+					
+					
+					int8_t b = 8;
+					AudioArray <std::pair<int8_t, int8_t>, 2> array =  readInStereoAudioFile(soundFile1, b, samples_per_sec);
+					AudioArray <std::pair<int8_t, int8_t>, 2> newArray = array.reverseAudio();
+					writeOutStereoAudioFile(outFileName, b, newArray);
+
+					
+				}
+
+				else if (bit_count == 16) {
+
+					int16_t b = 16;
+					AudioArray <std::pair<int16_t, int16_t>, 2> array =  readInStereoAudioFile(soundFile1, b, samples_per_sec);
+					AudioArray <std::pair<int16_t, int16_t>, 2> newArray = array.reverseAudio();
+					writeOutStereoAudioFile(outFileName, b, newArray);
+
+				}
+
+				else{
+
+					std::cerr << "Invalid bit number entered." << std::endl;
+					return 1;
+				}
+
+			}// end stereo channel
+
+
+		} // end rev
+	} // end s=9
+
 	if (s == 10) {
 
 		if(std::string(v[7]) == "-add") {
@@ -81,16 +147,16 @@ int main(int argc, char *argv[]) {
 			else if(num_of_channels == 2){
 
 				if(bit_count == 8) {
-					if(std::string(v[7]) == "-add") {
-						soundFile1 = v[s - 2];
-						soundFile2 = v[s - 1];
-						int8_t b = 8;
-						AudioArray <std::pair<int8_t, int8_t>, 2> array1 =  readInStereoAudioFile(soundFile1, b, samples_per_sec);
-						AudioArray <std::pair<int8_t, int8_t>, 2> array2 =  readInStereoAudioFile(soundFile2, b, samples_per_sec);
-						AudioArray <std::pair<int8_t, int8_t>, 2> newArray = array1 + array2; 
-						writeOutStereoAudioFile(outFileName, b, newArray);
+					
+					soundFile1 = v[s - 2];
+					soundFile2 = v[s - 1];
+					int8_t b = 8;
+					AudioArray <std::pair<int8_t, int8_t>, 2> array1 =  readInStereoAudioFile(soundFile1, b, samples_per_sec);
+					AudioArray <std::pair<int8_t, int8_t>, 2> array2 =  readInStereoAudioFile(soundFile2, b, samples_per_sec);
+					AudioArray <std::pair<int8_t, int8_t>, 2> newArray = array1 + array2; 
+					writeOutStereoAudioFile(outFileName, b, newArray);
 
-					}
+					
 				}
 
 				else if (bit_count == 16) {
