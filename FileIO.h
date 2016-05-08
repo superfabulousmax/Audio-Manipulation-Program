@@ -9,7 +9,7 @@ namespace urssin001 {
 
 	static int fileSize;
 	template<typename T>
-	AudioArray<T>  readInMonoAudioFile(std::string filename, T bits){
+	AudioArray<T>  readInMonoAudioFile(std::string filename, T bits, int samplingRate){
 
 		AudioArray <T> array;
 		std::ifstream readAudio(filename+".raw", std::ios::in | std::ios::binary);
@@ -24,9 +24,8 @@ namespace urssin001 {
 			readAudio.seekg(0, readAudio.beg);
 			fileSize = fileSizeInBytes;
 			int NumberOfSamples = fileSizeInBytes / (sizeof(T) * 1);
-			
 			array.resizeArray(NumberOfSamples);
-
+			array.setSamplingRate(samplingRate);
 			readAudio.read((char *) &(array[0]), fileSizeInBytes);
 
 
@@ -37,7 +36,7 @@ namespace urssin001 {
 	}
 
 	template<typename T>
-	AudioArray<std::pair<T, T>, 2>  readInStereoAudioFile(std::string filename, T bits){
+	AudioArray<std::pair<T, T>, 2>  readInStereoAudioFile(std::string filename, T bits, int samplingRate){
 
 		AudioArray <std::pair<T, T>, 2 > array;
 		std::ifstream readAudio(filename+".raw", std::ios::in | std::ios::binary);
@@ -54,7 +53,7 @@ namespace urssin001 {
 			int NumberOfSamples = fileSizeInBytes / (sizeof(T) * 2);
 			
 			array.resizeArray(NumberOfSamples);
-
+			array.setSamplingRate(samplingRate);
 			
 			for(int i = 0; i < NumberOfSamples; i++) {
 				readAudio.read((char *) &(array[i].first), sizeof(T) );
@@ -80,8 +79,9 @@ namespace urssin001 {
 		
 		else {
 			
-
-			writeAudio.write((char *) &(array[0]), array.getSize());
+			int bytes = 1;
+			if(bits == 16) bytes = 2;
+			writeAudio.write((char *) &(array[0]), array.getSize() * bytes);
 			
 
 			writeAudio.close();
@@ -101,7 +101,7 @@ namespace urssin001 {
 		else {
 			
 			int NumberOfSamples = array.getSize();
-		
+			
 			
 			for(int i = 0; i < NumberOfSamples; i++) {
 				writeAudio.write((char *) &(array[i].first), sizeof(T) );
