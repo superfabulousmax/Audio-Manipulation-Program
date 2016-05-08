@@ -16,8 +16,16 @@ Driver.o: Driver.cpp Audio.h
 FileIO.o: FileIO.cpp FileIO.h
 	$(CC) $(CCFLAGS) FileIO.cpp -c
 
+tests: UnitTests.o Audio.h 
+	$(CC) $(CCFLAGS) UnitTests.o -o tests
+
+UnitTests.o: UnitTests.cpp
+	$(CC) $(CCFLAGS) UnitTests.cpp -c
+
 clean:
 	rm -f *.o
 	rm samp
 
-
+testsClean:
+	rm -f *.o
+	rm tests

@@ -19,6 +19,8 @@ namespace urssin001 {
 			int size;
 		public:
 			AudioArray(int N = 0) : size(N) { data_vector.reserve(size); }
+			// constructor for unit tests
+			AudioArray(std::vector<T> customBuffer): data_vector(customBuffer), size(customBuffer.size) { }
 			T & operator[] (int index) { return data_vector[index]; }
 			void resizeArray(int N) { size = N; data_vector.resize(size); }
 			int getSize() { return size; }
@@ -150,14 +152,13 @@ namespace urssin001 {
 			float computeRMS() {
 				AudioArray<T> temp = *this;
 				int M = temp.getSize();
-				float result = 0;
-				// float result = std::accumulate(temp.data_vector.begin(), temp.data_vector.end(), 0,
-				// 		[](const T & val)
-				// 		{
-				// 			return val * val;
+				float result = std::accumulate(temp.data_vector.begin(), temp.data_vector.end(), 0,
+						[](int sum, const T & val)
+						{
+							return sum + val * val;
 
-				// 		}
-				// );
+						}
+				);
 
 				return std::sqrt((1.0f/M) * result);
 

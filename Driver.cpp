@@ -2,7 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
-#include <cstdint>
+
 #include "FileIO.h"
 #include "Audio.h"
 
