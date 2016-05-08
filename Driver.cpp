@@ -103,6 +103,73 @@ int main(int argc, char *argv[]) {
 
 
 		} // end rev
+
+		if(std::string(v[7]) == "-rms") {
+			soundFile1 = v[s - 1];
+			if(num_of_channels == 1) {
+
+				if(bit_count == 8) {
+					
+						int8_t b = 8;
+						AudioArray <int8_t> array =  readInMonoAudioFile(soundFile1, b, samples_per_sec);
+						float rms = array.computeRMS(); 
+						std::cout << "Computed RMS is: " << rms << std::endl;
+
+					}
+				
+
+				else if (bit_count == 16) {
+
+					int16_t b = 16;
+					AudioArray <int16_t> array =  readInMonoAudioFile(soundFile1, b, samples_per_sec);
+					float rms = array.computeRMS(); 
+					std::cout << "Computed RMS is: " << rms << std::endl;
+
+				}
+
+				else{
+
+					std::cerr << "Invalid bit number entered." << std::endl;
+					return 1;
+				}
+
+			} // end mono channel
+
+			else if(num_of_channels == 2){
+
+				if(bit_count == 8) {
+					
+					
+					int8_t b = 8;
+					AudioArray <std::pair<int8_t, int8_t>, 2> array =  readInStereoAudioFile(soundFile1, b, samples_per_sec);
+					std::pair<float, float> rms = array.computeRMS();
+					std::cout << "Computed RMS is: " << std::endl;
+					std::cout << "For L: " <<  rms.first << std::endl;
+					std::cout << "For R: " <<  rms.second << std::endl;
+
+					
+				}
+
+				else if (bit_count == 16) {
+
+					int16_t b = 16;
+					AudioArray <std::pair<int16_t, int16_t>, 2> array =  readInStereoAudioFile(soundFile1, b, samples_per_sec);
+					std::pair<float, float> rms = array.computeRMS();
+					std::cout << "Computed RMS is: " << std::endl;
+					std::cout << "For L: " <<  rms.first << std::endl;
+					std::cout << "For R: " <<  rms.second << std::endl;
+
+				}
+
+				else{
+
+					std::cerr << "Invalid bit number entered." << std::endl;
+					return 1;
+				}
+
+			}// end stereo channel
+
+		} // end rms
 	} // end s=9
 
 	if (s == 10) {
