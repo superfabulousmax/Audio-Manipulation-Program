@@ -21,22 +21,33 @@ TEST_CASE("Mono audio add","This tests that the adding of two mono audio files w
 
 }
 
-// TEST_CASE("Stereo audio add","This tests that the adding of two stereo audio files works correctly.")
-// {
+TEST_CASE("Stereo audio add","This tests that the adding of two stereo audio files works correctly.")
+{
+	std::vector<std::pair<int16_t, int16_t >> buffer1 = {std::make_pair(int16_t(1), int16_t(2))};
+	std::vector<std::pair<int16_t, int16_t >> buffer2 = {std::make_pair(int16_t(3), int16_t(4))};
+	std::vector<std::pair<int16_t, int16_t >> addBuffer = {std::make_pair(int16_t(4), int16_t(6))};
 
-// 	std::vector<std::pair<int16_t, int16_t >> buffer1 = {std::make_pair(int8_t(1), int8_t(2))};
-// 	std::vector<std::pair<int16_t, int16_t >> buffer2 = {std::make_pair(int8_t(3), int8_t(4))};
-// 	std::vector<std::pair<int16_t, int16_t >> addBuffer = {std::make_pair(int8_t(4), int8_t(6))};
-// 	AudioArray <std::pair<int16_t, int16_t >, 2> array1(buffer1);
-// 	AudioArray <std::pair<int16_t, int16_t >, 2> array2(buffer2);
-// 	AudioArray <std::pair<int16_t, int16_t >, 2> add = array1 + array2;
+	AudioArray <std::pair<int16_t, int16_t >, 2> array1(buffer1);
+	AudioArray <std::pair<int16_t, int16_t >, 2> array2(buffer2);
+	AudioArray <std::pair<int16_t, int16_t >, 2> add = array1 + array2;
 
-// 	for(int i = 0; i < add.getSize(); ++i) {
-// 		REQUIRE(add[i].first == addBuffer[i].first);
-// 		REQUIRE(add[i].second == addBuffer[i].second);
-// 	}
+	// boundary case
+	std::vector<std::pair<int16_t, int16_t >> buffer3 = {std::make_pair(INT16_MIN ,  INT16_MAX )};
+	std::vector<std::pair<int16_t, int16_t >> buffer4 = {std::make_pair(int16_t(-3), int16_t(4))};
+	std::vector<std::pair<int16_t, int16_t >> boundaryBuffer = {std::make_pair( INT16_MIN ,  INT16_MAX)};
 
-// }
+	AudioArray <std::pair<int16_t, int16_t >, 2> array3(buffer3);
+	AudioArray <std::pair<int16_t, int16_t >, 2> array4(buffer4);
+	AudioArray <std::pair<int16_t, int16_t >, 2> addBoundary = array3 + array4;
+
+	for(int i = 0; i < add.getSize(); ++i) {
+		REQUIRE(add[i].first == addBuffer[i].first);
+		REQUIRE(add[i].second == addBuffer[i].second);
+		REQUIRE(addBoundary[i].first == boundaryBuffer[i].first);
+		REQUIRE(addBoundary[i].second == boundaryBuffer[i].second);
+	}
+
+}
 
 TEST_CASE("Mono audio concatenation","This tests that concatenation of two mono audio files works correctly.")
 {

@@ -248,6 +248,27 @@ namespace urssin001 {
 
 			}
 
+			// add audio file A and B
+
+			AudioArray< std::pair<T, T>, 2> operator+(AudioArray< std::pair<T, T>, 2> A) {
+				assert(this->size == A.size);
+				AudioArray< std::pair<T, T>, 2>temp = *this;
+				const T min = std::numeric_limits<T>::min();
+				const T max = std::numeric_limits<T>::max();
+				
+				for(int i = 0; i < size; i++) {
+				 	if(temp[i].first + A[i].first > max) temp[i].first = max;
+				 	else if(temp[i].first + A[i].first < min) temp[i].first = min;
+				 	else temp[i].first += A[i].first;
+
+				 	if(temp[i].second + A[i].second > max) temp[i].second = max;
+				 	else if(temp[i].second + A[i].second < min) temp[i].second = min;
+				 	else temp[i].second += A[i].second;
+				}
+				
+				return temp;
+			}
+
 			// volume operation
 
 			AudioArray< std::pair<T, T>, 2> operator * (std::pair <float, float> volume) {
