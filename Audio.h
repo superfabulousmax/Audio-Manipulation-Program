@@ -7,6 +7,8 @@
 #include <iterator>
 #include <algorithm>
 #include <limits> 
+#include <numeric>
+#include <cmath>
 namespace urssin001 {
 
 	// core audio template to manipulate mono data
@@ -144,6 +146,22 @@ namespace urssin001 {
 				return temp;
 
 			}
+
+			float computeRMS() {
+				AudioArray<T> temp = *this;
+				int M = temp.getSize();
+				float result = 0;
+				// float result = std::accumulate(temp.data_vector.begin(), temp.data_vector.end(), 0,
+				// 		[](const T & val)
+				// 		{
+				// 			return val * val;
+
+				// 		}
+				// );
+
+				return std::sqrt((1.0f/M) * result);
+
+			}
 			// radd
 			// AudioArray<T> operator \ (std::pair <int, int> range) {
 			// 	assert(range.first >= 0 & range.second < this->getSize() & (range.first < range.second));
@@ -235,6 +253,19 @@ namespace urssin001 {
 				}
 
 				return temp;
+			}
+
+
+			// reverse audio
+
+			AudioArray<std::pair<T, T>, 2> reverseAudio() {
+
+				AudioArray<std::pair<T, T>, 2>  temp = *this;
+
+				std::reverse(temp.data_vector.begin(), temp.data_vector.end());
+
+				return temp;
+
 			}
 	};
 

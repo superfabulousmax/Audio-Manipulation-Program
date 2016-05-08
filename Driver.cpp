@@ -34,6 +34,14 @@ int main(int argc, char *argv[]) {
 				AudioArray <int8_t> newArray = array.reverseAudio();
 				writeOutMonoAudioFile("revsusan", b, newArray);
 			}
+
+			if(std::string(argv[7])== "-rms") {
+			
+				int8_t b;
+				AudioArray <int8_t> array =  readInMonoAudioFile(soundFile1, b);
+				float rms = array.computeRMS();
+				std::cout << "Computed RMS is: " << rms << std::endl;
+			}
 		}
 		if(argc >= 10){
 
