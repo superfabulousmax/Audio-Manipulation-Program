@@ -233,4 +233,25 @@ TEST_CASE("Mono audio normalise","This tests that normalisation of a mono audio 
 
 }
 
+TEST_CASE("Stereo audio normalise","This tests that normalisation of a stereo audio file works correctly.")
+{
+	std::pair<float, float > currentRMS = std::make_pair(std::sqrt(0.5f* (1 + 81)), std::sqrt(0.5f * (4 + 64)));
+	std::pair<float, float > desiredRMS = std::make_pair(3.0f, 3.0f);
+	std::pair<float, float > ratio = std::make_pair(( desiredRMS.first / currentRMS.first), (desiredRMS.second / currentRMS.second));
+	std::vector<std::pair<int8_t, int8_t >> buffer = {std::make_pair(int8_t(1), int8_t(2)), std::make_pair(int8_t(9), int8_t(8))};
+	std::vector<std::pair<int8_t, int8_t >> normBuffer = 
+	 {std::make_pair(int8_t(1 * ratio.first), int8_t(2 * ratio.second)), std::make_pair(int8_t(9 * ratio.first), int8_t(8  * ratio.second))};
+	AudioArray <std::pair<int8_t, int8_t >, 2> array(buffer);
+	
+	
+	REQUIRE(currentRMS == array.computeRMS());
+	AudioArray <std::pair<int8_t, int8_t >, 2>  n = array.norm(desiredRMS);
+
+	for(int i = 0; i < n.getSize(); ++i) {
+		REQUIRE(n[i].first == normBuffer[i].first);
+		REQUIRE(n[i].second == normBuffer[i].second);
+	}
+
+}
+
 

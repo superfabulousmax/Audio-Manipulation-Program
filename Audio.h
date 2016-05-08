@@ -234,6 +234,36 @@ namespace urssin001 {
 			int size;
 			int samplingRate;
 		public:
+			// custom functor for stereo normalisation
+
+			class normalise {
+				private:
+					std::pair<float, float>  desiredRMS;
+					std::pair<float, float>  currentRMS;
+					std::pair<float, float> ratio;
+					const T min = std::numeric_limits<T>::min();
+					const T max = std::numeric_limits<T>::max();
+
+				public:
+					normalise(std::pair<float, float> current, std::pair<float, float>  desired) : currentRMS(current), desiredRMS(desired)
+					{
+					 	ratio = std::make_pair(float( desiredRMS.first / currentRMS.first), float(desiredRMS.second / currentRMS.second));
+					}
+
+					std::pair<T,T> operator () (std::pair<T,T> amp) {
+
+						std::pair<T,T> newAmp = amp;
+						if(amp.first * ratio.first > max) newAmp.first = max;
+						else if (amp.first * ratio.first < min)  newAmp.first = min;
+						else newAmp.first = amp.first *ratio.first;
+
+						if(amp.second * ratio.second > max) newAmp.second = max;
+						else if (amp.second * ratio.second < min)  newAmp.second = min;
+						else newAmp.second = amp.second *ratio.second;
+
+						return newAmp;
+					}
+			};
 			AudioArray(int N = 0) : size(N) { data_vector.reserve(size); samplingRate = 44100;}
 			AudioArray(std::vector<std::pair <T, T>> customBuffer): data_vector(customBuffer), size(customBuffer.size()) { }
 			std::pair <T, T> & operator[](int index) { return data_vector[index]; }
@@ -419,6 +449,15 @@ namespace urssin001 {
 				*this = result;
 				return *this;
 
+			}
+
+			// normalise
+
+			AudioArray<std::pair<T, T>, 2> norm(std::pair<float, float> desiredRMS) {
+				AudioArray<std::pair<T, T>, 2> temp = *this;
+				std::pair<float, float> currentRMS = temp.computeRMS();
+				std::transform(temp.data_vector.begin(), temp.data_vector.end(), temp.data_vector.begin(), normalise (currentRMS, desiredRMS));
+				return temp;
 			}
 	};
 
