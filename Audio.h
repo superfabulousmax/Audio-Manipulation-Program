@@ -185,6 +185,7 @@ namespace urssin001 {
 			int size;
 		public:
 			AudioArray(int N = 0) : size(N) { data_vector.reserve(size); }
+			AudioArray(std::vector<std::pair <T, T>> customBuffer): data_vector(customBuffer), size(customBuffer.size()) { }
 			std::pair <T, T> & operator[](int index) { return data_vector[index]; }
 			void resizeArray(int N) { size = N; data_vector.resize(size); }
 			int getSize() { return size; }

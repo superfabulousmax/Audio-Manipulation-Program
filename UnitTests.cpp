@@ -22,3 +22,21 @@ TEST_CASE("Mono audio concatenation","This that concatenation of two mono audio 
 
 }
 
+TEST_CASE("Stereo audio concatenation","This that concatenation of two stereo audio files works correctly.")
+{
+
+	std::vector<std::pair<int16_t, int16_t >> buffer1 = {std::make_pair(int8_t(1), int8_t(2))};
+	std::vector<std::pair<int16_t, int16_t >> buffer2 = {std::make_pair(int8_t(3), int8_t(4))};
+	std::vector<std::pair<int16_t, int16_t >> catBuffer = {std::make_pair(int8_t(1), int8_t(2)), std::make_pair(int8_t(3), int8_t(4))};
+	AudioArray <std::pair<int16_t, int16_t >, 2> array1(buffer1);
+	AudioArray <std::pair<int16_t, int16_t >, 2> array2(buffer2);
+	AudioArray <std::pair<int16_t, int16_t >, 2> cat = array1 | array2;
+
+	for(int i = 0; i < cat.getSize(); ++i) {
+		REQUIRE(cat[i].first == catBuffer[i].first);
+		REQUIRE(cat[i].second == catBuffer[i].second);
+	}
+
+}
+
+
