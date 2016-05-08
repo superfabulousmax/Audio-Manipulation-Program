@@ -265,8 +265,40 @@ namespace urssin001 {
 				 	else if(temp[i].second + A[i].second < min) temp[i].second = min;
 				 	else temp[i].second += A[i].second;
 				}
+
+				return temp;
+			}
+
+			// cut order over range r1 - r2
+
+			AudioArray< std::pair<T, T>, 2>operator ^ (std::pair <int, int> range) {
+				assert(range.first >= 0 & range.second < this->getSize() & (range.first < range.second));
+
+				AudioArray< std::pair<T, T>, 2> temp = *this;
+				int counter = 0;
+				int start = range.first;
+				int end = range.second;
+
+				std::remove_if( temp.data_vector.begin(), temp.data_vector.end(), 
+					[&counter, start, end] (const std::pair<T, T> & val)
+					{
+						bool rem = false;
+						if(counter >= start & counter <= end) {
+							rem = true;
+						}
+						
+						++counter;
+
+						return rem;
+
+					}
+				);
+
+				temp.resizeArray( temp.getSize() - (end - start) - 1); // get rid of stuff at the end that resulted from remove_if 
 				
 				return temp;
+
+
 			}
 
 			// volume operation

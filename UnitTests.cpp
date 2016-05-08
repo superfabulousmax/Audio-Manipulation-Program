@@ -104,10 +104,20 @@ TEST_CASE("Mono audio cut","This tests that the cutting of over the given range 
 	}
 }
 
-// TEST_CASE("Stereo audio cut","This tests that the cutting of over the given range for stereo audio files works correctly.")
-// {
+TEST_CASE("Stereo audio cut","This tests that the cutting of over the given range for stereo audio files works correctly.")
+{
+	std::vector<std::pair<int16_t, int16_t >> buffer =
+	 {std::make_pair(int16_t(1), int16_t(2)) ,std::make_pair(int16_t(3), int16_t(4)), std::make_pair(int16_t(7), int16_t(6))};
+	std::vector<std::pair<int16_t, int16_t >> cutBuffer = 
+	 {std::make_pair(int16_t(1), int16_t(2)) , std::make_pair(int16_t(7), int16_t(6))};
+	AudioArray <std::pair<int16_t, int16_t >, 2> array(buffer);
+	AudioArray <std::pair<int16_t, int16_t >, 2> cut = array ^ std::make_pair(1, 2);
 
-// }
+	for(int i = 0; i < cut.getSize(); ++i) {
+		REQUIRE(cut[i].first == cutBuffer[i].first);
+		REQUIRE(cut[i].second == cutBuffer[i].second);
+	}
+}
 
 TEST_CASE("Mono audio reverse","This tests that reverse of mono audio files works correctly.")
 {
