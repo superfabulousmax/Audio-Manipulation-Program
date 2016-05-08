@@ -157,6 +157,18 @@ TEST_CASE("Mono audio reverse","This tests that reverse of mono audio files work
 
 }
 
+TEST_CASE("Stereo audio reverse","This tests that reverse of stereo audio files works correctly.")
+{
+	std::vector<std::pair<int8_t, int8_t >> buffer = {std::make_pair(int8_t(1), int8_t(2)), std::make_pair(int8_t(3), int8_t(4))};
+	std::vector<std::pair<int8_t, int8_t >> revBuffer = {std::make_pair(int8_t(4), int8_t(3)), std::make_pair(int8_t(2), int8_t(1))};
+	AudioArray <std::pair<int8_t, int8_t >, 2> array(buffer);
+	AudioArray <std::pair<int8_t, int8_t >, 2> reverse = array.reverseAudio();
+	for(int i = 0; i < reverse.getSize(); ++i) {
+		REQUIRE(reverse[i].first == revBuffer[i].first);
+		REQUIRE(reverse[i].second == revBuffer[i].second);
+	}
+}
+
 TEST_CASE("Mono audio rms","This tests that the calculation of RMS for mono audio files works correctly.")
 {
 

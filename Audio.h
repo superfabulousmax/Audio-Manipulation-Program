@@ -399,7 +399,12 @@ namespace urssin001 {
 			AudioArray<std::pair<T, T>, 2> reverseAudio() {
 
 				AudioArray<std::pair<T, T>, 2>  temp = *this;
+				std::transform(temp.data_vector.begin(), temp.data_vector.end(), temp.data_vector.begin(),
+					[](std::pair<T, T> p) {
 
+						return std::make_pair(p.second, p.first);
+					}
+				);
 				std::reverse(temp.data_vector.begin(), temp.data_vector.end());
 
 				return temp;
