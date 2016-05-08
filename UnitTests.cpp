@@ -151,7 +151,7 @@ TEST_CASE("Stereo audio rms","This tests that the calculation of RMS for stereo 
 
 
 
-TEST_CASE("Mono audio ranged add","This tests that ranged add of two stereo audio files works correctly.")
+TEST_CASE("Mono audio ranged add","This tests that ranged add of two mono audio files works correctly.")
 {
 
 	std::vector<int8_t> buffer1 = {int8_t(1), int8_t(2), int8_t(9), int8_t(8)};
@@ -165,6 +165,25 @@ TEST_CASE("Mono audio ranged add","This tests that ranged add of two stereo audi
 	AudioArray <int8_t> result = array1.rangedAdd(array2, range1, range1);
 	for(int i = 0; i < result.getSize(); ++i) {
 		REQUIRE(result[i] == rangedAdd[i]);
+	}
+
+}
+
+TEST_CASE("Mono audio normalise","This tests that normalisation of a mono audio file works correctly.")
+{
+	float currentRMS = std::sqrt(0.25f* (1 + 4 + 81 + 64));
+	float desiredRMS = 3.0f;
+	float ratio = desiredRMS / currentRMS;
+	std::vector<int8_t> buffer = {int8_t(1), int8_t(2), int8_t(9), int8_t(8)};
+	std::vector<int8_t> normBuffer = {int8_t(1 * ratio), int8_t(2 * ratio), int8_t(9 * ratio), int8_t(8 * ratio)};
+	AudioArray <int8_t> array(buffer);
+	
+	
+	REQUIRE(currentRMS == array.computeRMS());
+	AudioArray <int8_t> n = array.norm(desiredRMS);
+
+	for(int i = 0; i < n.getSize(); ++i) {
+		REQUIRE(n[i] == normBuffer[i]);
 	}
 
 }

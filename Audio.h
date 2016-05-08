@@ -10,7 +10,7 @@
 #include <numeric>
 #include <cmath>
 namespace urssin001 {
-
+	
 	// core audio template to manipulate mono data
 	
 	template <typename T, int channels = 1> class AudioArray {
@@ -19,6 +19,28 @@ namespace urssin001 {
 			int size;
 			int samplingRate;
 		public:
+
+			// custom functor for mono normalisation
+
+			class normalise {
+				private:
+					float desiredRMS;
+					float currentRMS;
+					float ratio;
+					const T min = std::numeric_limits<T>::min();
+					const T max = std::numeric_limits<T>::max();
+
+				public:
+					normalise(float current, float desired) : currentRMS(current), desiredRMS(desired){ ratio = desiredRMS/currentRMS; }
+
+					T operator () (T amp) {
+						if(amp * ratio > max) return max;
+						else if (amp * ratio < min) return min;
+						else return amp *ratio;
+					}
+			};
+
+
 			AudioArray(int N = 0) : size(N) { data_vector.reserve(size); samplingRate = 44100; }
 			// constructor for unit tests
 			AudioArray(std::vector<T> customBuffer): data_vector(customBuffer), size(customBuffer.size()) { }
@@ -192,7 +214,15 @@ namespace urssin001 {
 
 			}
 
-		
+			// normalise
+
+			AudioArray<T> norm(float desiredRMS) {
+				AudioArray<T> temp = *this;
+				float currentRMS = temp.computeRMS();
+				std::transform(temp.data_vector.begin(), temp.data_vector.end(), temp.data_vector.begin(), normalise (currentRMS, desiredRMS));
+				return temp;
+			}
+
 	};
 
 	// specialized Audio template to manipulate the data which
