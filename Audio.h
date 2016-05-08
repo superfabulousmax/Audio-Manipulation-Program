@@ -105,10 +105,12 @@ namespace urssin001 {
 
 			AudioArray<T> operator ^ (std::pair <int, int> range) {
 				assert(range.first >= 0 & range.second < this->getSize() & (range.first < range.second));
+
 				AudioArray<T> temp = *this;
 				int counter = 0;
 				int start = range.first;
 				int end = range.second;
+
 				std::remove_if( temp.data_vector.begin(), temp.data_vector.end(), 
 					[&counter, start, end] (const T & val)
 					{
@@ -124,11 +126,33 @@ namespace urssin001 {
 					}
 				);
 
-				temp.resizeArray( temp.getSize() - (end - start) - 1);
+				temp.resizeArray( temp.getSize() - (end - start) - 1); // get rid of stuff at the end that resulted from remove_if 
 				
 				return temp;
 
+
 			}
+
+			// reverse audio
+
+			AudioArray<T> reverseAudio() {
+
+				AudioArray<T> temp = *this;
+
+				std::reverse(temp.data_vector.begin(), temp.data_vector.end());
+
+				return temp;
+
+			}
+			// radd
+			// AudioArray<T> operator \ (std::pair <int, int> range) {
+			// 	assert(range.first >= 0 & range.second < this->getSize() & (range.first < range.second));
+
+			// 	AudioArray<T> temp = *this;
+
+			// 	return temp;
+
+			// }
 
 		
 	};

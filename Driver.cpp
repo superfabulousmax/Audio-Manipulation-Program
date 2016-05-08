@@ -26,10 +26,18 @@ int main(int argc, char *argv[]) {
 		if(argc >= 9)
 		{
 			if(std::string(argv[7]) == "-o") outFileName = argv[8];
+			
+			if(std::string(argv[7])== "-rev") {
+			
+				int8_t b;
+				AudioArray <int8_t> array =  readInMonoAudioFile(soundFile1, b);
+				AudioArray <int8_t> newArray = array.reverseAudio();
+				writeOutMonoAudioFile("revsusan", b, newArray);
+			}
 		}
 		if(argc >= 10){
 
-			if(std::string(argv[7])== "-v" || std::string(argv[9])== "-v") {
+			if(std::string(argv[7])== "-v") {
 
 				float left = atof(argv[8]);
 				float right = atof(argv[9]);
@@ -41,7 +49,7 @@ int main(int argc, char *argv[]) {
 				writeOutStereoAudioFile("volsusan", b, newArray);
 			}
 
-			if(std::string(argv[7])== "-cut" || std::string(argv[9])== "-cut") {
+			if(std::string(argv[7])== "-cut") {
 				int start = atoi(argv[8]);
 				int end = atoi(argv[9]);
 				int8_t b;
@@ -49,8 +57,8 @@ int main(int argc, char *argv[]) {
 				AudioArray <int8_t> newArray = array ^ std::make_pair(start, end); 
 				writeOutMonoAudioFile("cutsusan", b, newArray);
 			}
-			
-			if(std::string(argv[7])== "-cat" || std::string(argv[9])== "-cat") {
+
+			if(std::string(argv[7])== "-cat") {
 				soundFile2 =  argv[argc - 1];
 				soundFile1 =  argv[argc - 2];
 				// int8_t b;
@@ -65,7 +73,7 @@ int main(int argc, char *argv[]) {
 
 			}
 
-			if(std::string(argv[7])== "-add" || std::string(argv[9])== "-add") {
+			if(std::string(argv[7])== "-add") {
 				soundFile2 =  argv[argc - 1];
 				soundFile1 =  argv[argc - 2];
 				int8_t b;
@@ -73,6 +81,17 @@ int main(int argc, char *argv[]) {
 				AudioArray <int8_t> array2 =  readInMonoAudioFile(soundFile2, b);
 				AudioArray <int8_t> newArray = array1 + array2; 
 				writeOutMonoAudioFile("addsusan", b, newArray);
+			}
+
+
+		}
+		if(argc >= 12){
+			if(std::string(argv[7])== "-radd") {
+				int start = atoi(argv[8]);
+				int end = atoi(argv[9]);
+				soundFile2 =  argv[argc - 1];
+				soundFile1 =  argv[argc - 2];
+
 			}
 
 		}
