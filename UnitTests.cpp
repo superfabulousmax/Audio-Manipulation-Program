@@ -87,6 +87,15 @@ TEST_CASE("Mono audio reverse","This tests that reverse of mono audio files work
 
 }
 
+TEST_CASE("Mono audio rms","This tests that the calculation of RMS for mono audio files works correctly.")
+{
+
+	std::vector<int8_t> buffer = {int8_t(1), int8_t(2)};
+	AudioArray <int8_t> array(buffer);
+	float result = std::sqrt(0.5f * (1 + 4));
+	REQUIRE(array.computeRMS() == result);
+}
+
 TEST_CASE("Stereo audio concatenation","This tests that concatenation of two stereo audio files works correctly.")
 {
 
