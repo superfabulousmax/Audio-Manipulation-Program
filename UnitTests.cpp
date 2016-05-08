@@ -92,7 +92,7 @@ TEST_CASE("Stereo audio concatenation","This tests that concatenation of two ste
 
 }
 
-TEST_CASE("Mono audio volume factor","This tests that the volume factor operation for mono audio files works correctly.")
+TEST_CASE("Stereo audio volume factor","This tests that the volume factor operation for stereo audio files works correctly.")
 {
 	std::vector<std::pair<int8_t, int8_t>> buffer = {std::make_pair(int8_t(1), int8_t(2))};
 	std::vector<std::pair<int8_t, int8_t>> volBuffer = {std::make_pair(int8_t(1 * 0.2f), int8_t(2 * 0.5f) )};
@@ -106,7 +106,7 @@ TEST_CASE("Mono audio volume factor","This tests that the volume factor operatio
 	}
 }
 
-TEST_CASE("Stereo audio volume factor","This tests that the volume factor operation for stereo audio files works correctly.")
+TEST_CASE("Mono audio volume factor","This tests that the volume factor operation for mono audio files works correctly.")
 {
 	std::vector<int8_t> buffer = {int8_t(1), int8_t(2)};
 	std::vector<int8_t> volBuffer = {int8_t(1 * 0.2f), int8_t(2 * 0.2f)};
@@ -191,6 +191,25 @@ TEST_CASE("Mono audio ranged add","This tests that ranged add of two mono audio 
 	AudioArray <int8_t> result = array1.rangedAdd(array2, range1, range1);
 	for(int i = 0; i < result.getSize(); ++i) {
 		REQUIRE(result[i] == rangedAdd[i]);
+	}
+
+}
+
+TEST_CASE("Stereo audio ranged add","This tests that ranged add of two stereo audio files works correctly.")
+{
+
+	std::vector<std::pair<int8_t, int8_t >> buffer1 = {std::make_pair(int8_t(1), int8_t(2)), std::make_pair(int8_t(9), int8_t(8))};
+	std::vector<std::pair<int8_t, int8_t >> buffer2 = {std::make_pair(int8_t(3), int8_t(4)), std::make_pair(int8_t(1), int8_t(2))};
+	std::vector<std::pair<int8_t, int8_t >> rangedAdd = {std::make_pair(int8_t(4), int8_t(6)), std::make_pair(int8_t(10), int8_t(10))};
+	std::pair<int, int> range1 = std::make_pair(0, 1);
+	AudioArray <std::pair<int8_t, int8_t >, 2> array1(buffer1);
+	AudioArray <std::pair<int8_t, int8_t >, 2> array2(buffer2);
+	array1.setSamplingRate(1);
+	array2.setSamplingRate(1);
+	AudioArray <std::pair<int8_t, int8_t >, 2> result = array1.rangedAdd(array2, range1, range1);
+	for(int i = 0; i < result.getSize(); ++i) {
+		REQUIRE(result[i].first == rangedAdd[i].first);
+		REQUIRE(result[i].second == rangedAdd[i].second);
 	}
 
 }
