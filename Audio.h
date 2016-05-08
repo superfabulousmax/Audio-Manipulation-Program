@@ -20,7 +20,7 @@ namespace urssin001 {
 		public:
 			AudioArray(int N = 0) : size(N) { data_vector.reserve(size); }
 			// constructor for unit tests
-			AudioArray(std::vector<T> customBuffer): data_vector(customBuffer), size(customBuffer.size) { }
+			AudioArray(std::vector<T> customBuffer): data_vector(customBuffer), size(customBuffer.size()) { }
 			T & operator[] (int index) { return data_vector[index]; }
 			void resizeArray(int N) { size = N; data_vector.resize(size); }
 			int getSize() { return size; }
